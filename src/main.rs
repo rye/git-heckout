@@ -36,5 +36,9 @@ fn main() {
 
 	let branch = std::env::args().last().expect("Expected a last argument");
 
+	let mut branch_names: Vec<String> = branch_names(&repository).unwrap();
 
+	if branch_names.contains(&branch) {
+	} else {
+	}
 }
