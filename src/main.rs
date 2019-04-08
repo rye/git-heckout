@@ -79,5 +79,20 @@ fn main() {
 			std::process::exit(1)
 		}
 	} else {
+		branch_names.sort_by(|a, b| {
+			let a_dist = similarity(&branch, a);
+			let b_dist = similarity(&branch, b);
+
+			a_dist.partial_cmp(&b_dist).unwrap()
+		});
+
+		let lowest_distance_branch = &branch_names[0];
+
+		if let Some(code) = checkout(lowest_distance_branch).code() {
+			std::process::exit(handle_exit_status_code(code))
+		} else {
+			eprintln!("git-checkout terminated by signal");
+			std::process::exit(1)
+		}
 	}
 }
