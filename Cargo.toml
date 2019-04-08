@@ -1,6 +1,8 @@
 [package]
 name = "git-heckout"
 version = "0.0.0"
+authors = ["Kristofer Rye <kristofer.rye@gmail.com>"]
+description = "Check out your favorite branches without typing them correctly."
 license = "MIT"
 
 [dependencies]
