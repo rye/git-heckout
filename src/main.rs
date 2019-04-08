@@ -31,6 +31,17 @@ fn find_repository() -> Result<git2::Repository, git2::Error> {
 	git2::Repository::open_from_env()
 }
 
+fn checkout<T: AsRef<OsStr>>(branch: T) -> ExitStatus {
+	Command::new("git")
+		.arg("checkout")
+		.arg(branch)
+		.stdin(Stdio::inherit())
+		.stdout(Stdio::inherit())
+		.stderr(Stdio::inherit())
+		.status()
+		.expect("failed to spawn `git checkout` subprocess")
+}
+
 fn main() {
 	let repository = find_repository().expect("Could not find a repository");
 
