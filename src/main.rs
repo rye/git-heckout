@@ -55,6 +55,15 @@ fn handle_exit_status_code(code: i32) -> i32 {
 	code
 }
 
+fn similarity(str1: &str, str2: &str) -> f32 {
+	#[allow(clippy::cast_precision_loss)]
+	let distance = distance::levenshtein(str1, str2) as f32;
+	#[allow(clippy::cast_precision_loss)]
+	let biggest_len = std::cmp::max(str1.len(), str2.len()) as f32;
+
+	distance / biggest_len
+}
+
 fn main() {
 	let repository = find_repository().expect("Could not find a repository");
 
