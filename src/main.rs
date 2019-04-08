@@ -1,6 +1,9 @@
 extern crate distance;
 extern crate git2;
 
+use std::ffi::OsStr;
+use std::process::{Command, ExitStatus, Stdio};
+
 fn branch_names(repository: &git2::Repository) -> Result<Vec<String>, git2::Error> {
 	let branches: git2::Branches = repository
 		.branches(None)
