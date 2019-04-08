@@ -34,9 +34,7 @@ fn find_repository() -> Result<git2::Repository, git2::Error> {
 fn main() {
 	let repository = find_repository().expect("Could not find a repository");
 
-	println!("git-heckout: {:?}", repository.workdir().unwrap());
+	let branch = std::env::args().last().expect("Expected a last argument");
 
-	println!("gb: {:?}", branch_names(&repository).unwrap());
 
-	println!("{}", distance::levenshtein("blep", "blop"));
 }
