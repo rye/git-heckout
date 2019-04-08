@@ -1,7 +1,7 @@
 extern crate distance;
 extern crate git2;
 
-fn git_branches(repository: &git2::Repository) -> Result<Vec<String>, git2::Error> {
+fn branch_names(repository: &git2::Repository) -> Result<Vec<String>, git2::Error> {
 	let branches: git2::Branches = repository
 		.branches(None)
 		.expect("Unable to get branches on repository. Is something messed up?");
@@ -37,7 +37,7 @@ fn main() {
 
 	println!("git-heckout: {:?}", repository.workdir().unwrap());
 
-	println!("gb: {:?}", git_branches(&repository).unwrap());
+	println!("gb: {:?}", branch_names(&repository).unwrap());
 
 	println!("{}", distance::levenshtein("blep", "blop"));
 }
