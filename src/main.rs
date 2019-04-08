@@ -53,6 +53,11 @@ fn main() {
 	let mut branch_names: Vec<String> = branch_names(&repository).unwrap();
 
 	if branch_names.contains(&branch) {
+		if let Some(code) = checkout(branch).code() {
+		} else {
+			eprintln!("git-checkout terminated by signal");
+			std::process::exit(1)
+		}
 	} else {
 	}
 }
