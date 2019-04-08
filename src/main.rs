@@ -26,7 +26,6 @@ fn branch_names(repository: &git2::Repository) -> Result<Vec<String>, git2::Erro
 		.collect()
 }
 
-
 // TODO Accept an OpenMode that lets you pick how it finds it
 fn find_repository() -> Result<git2::Repository, git2::Error> {
 	git2::Repository::open_from_env()
