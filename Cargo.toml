@@ -1,0 +1,7 @@
+[package]
+name = "git-heckout"
+version = "0.0.0"
+
+[dependencies]
+distance = "0.4.0"
+git2 = { version = "0.8.0", default-features = false }
