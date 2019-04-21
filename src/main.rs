@@ -1,5 +1,9 @@
-extern crate distance;
 extern crate git2;
+
+extern crate git_heckout;
+extern crate sublime_fuzzy;
+
+use git_heckout::similarity;
 
 fn branch_names(repository: &git2::Repository) -> Result<Vec<String>, git2::Error> {
 	let branches: git2::Branches = repository
@@ -38,15 +42,6 @@ fn checkout(repository: &mut git2::Repository, branch: &str) -> Result<(), git2:
 	repository.checkout_head(None)
 }
 
-fn similarity(str1: &str, str2: &str) -> f32 {
-	#[allow(clippy::cast_precision_loss)]
-	let distance = distance::levenshtein(str1, str2) as f32;
-	#[allow(clippy::cast_precision_loss)]
-	let biggest_len = std::cmp::max(str1.len(), str2.len()) as f32;
-
-	distance / biggest_len
-}
-
 fn interpret_checkout_result(branch: &str, result: Result<(), git2::Error>) {
 	match result {
 		Ok(_) => {
@@ -70,10 +65,10 @@ fn main() {
 		interpret_checkout_result(&branch, result);
 	} else {
 		branch_names.sort_by(|a, b| {
-			let a_dist = similarity(&branch, a);
-			let b_dist = similarity(&branch, b);
+			let a_dist = similarity::sublime(&branch, a);
+			let b_dist = similarity::sublime(&branch, b);
 
-			a_dist.partial_cmp(&b_dist).unwrap()
+			b_dist.partial_cmp(&a_dist).unwrap()
 		});
 
 		let lowest_distance_branch = &branch_names[0];
