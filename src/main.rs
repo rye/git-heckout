@@ -34,25 +34,11 @@ fn find_repository() -> Result<git2::Repository, git2::Error> {
 	git2::Repository::open_from_env()
 }
 
-fn checkout<T: AsRef<OsStr>>(branch: T) -> ExitStatus {
-	Command::new("git")
-		.arg("checkout")
-		.arg(branch)
-		.stdin(Stdio::inherit())
-		.stdout(Stdio::inherit())
-		.stderr(Stdio::inherit())
-		.status()
-		.expect("failed to spawn `git checkout` subprocess")
-}
+fn checkout(repository: &mut git2::Repository, branch: &str) -> Result<(), git2::Error> {
+	let branch_ref_name: &str = &format!("refs/heads/{}", &branch);
 
-fn handle_exit_status_code(code: i32) -> i32 {
-	if let 0 = code {
-		// do nothing... exit was okay
-	} else {
-		eprintln!("git-checkout exited with status code {:?}", code)
-	}
-
-	code
+	repository.set_head(branch_ref_name)?;
+	repository.checkout_head(None)
 }
 
 fn similarity(str1: &str, str2: &str) -> f32 {
@@ -65,18 +51,16 @@ fn similarity(str1: &str, str2: &str) -> f32 {
 }
 
 fn main() {
-	let repository = find_repository().expect("Could not find a repository");
+	let mut repository = find_repository().expect("Could not find a repository");
 
 	let branch = std::env::args().last().expect("Expected a last argument");
 
 	let mut branch_names: Vec<String> = branch_names(&repository).unwrap();
 
 	if branch_names.contains(&branch) {
-		if let Some(code) = checkout(branch).code() {
-			std::process::exit(handle_exit_status_code(code))
-		} else {
-			eprintln!("git-checkout terminated by signal");
-			std::process::exit(1)
+		match checkout(&mut repository, &branch) {
+			Ok(r) => { println!("Successfully checked out branch {} {:?}", &branch, r); }
+			Err(e) => { eprintln!("Unable to successfully check out branch: {:?}", e); }
 		}
 	} else {
 		branch_names.sort_by(|a, b| {
@@ -88,11 +72,9 @@ fn main() {
 
 		let lowest_distance_branch = &branch_names[0];
 
-		if let Some(code) = checkout(lowest_distance_branch).code() {
-			std::process::exit(handle_exit_status_code(code))
-		} else {
-			eprintln!("git-checkout terminated by signal");
-			std::process::exit(1)
+		match checkout(&mut repository, &lowest_distance_branch) {
+			Ok(r) => { println!("Checked out branch {}: {:?}", lowest_distance_branch, r); }
+			Err(e) => { eprintln!("Error while checking out {}: {:?}", lowest_distance_branch, e); }
 		}
 	}
 }
