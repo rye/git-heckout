@@ -1,5 +1,5 @@
 pub fn sublime(pattern: &str, string: &str) -> isize {
-	sublime_fuzzy::best_match(pattern, string).map_or(0, |result| result.score()).into()
+	sublime_fuzzy::best_match(pattern, string).map_or(0, |result| result.score())
 }
 
 #[cfg(test)]
