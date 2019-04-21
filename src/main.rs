@@ -47,6 +47,17 @@ fn similarity(str1: &str, str2: &str) -> f32 {
 	distance / biggest_len
 }
 
+fn interpret_checkout_result(branch: &str, result: Result<(), git2::Error>) {
+	match result {
+		Ok(_) => {
+			println!("Successfully checked out branch {}.", &branch);
+		}
+		Err(e) => {
+			eprintln!("An error occurred while checking out {}: {}", &branch, e);
+		}
+	}
+}
+
 fn main() {
 	let mut repository = find_repository().expect("Could not find a repository");
 
@@ -55,10 +66,8 @@ fn main() {
 	let mut branch_names: Vec<String> = branch_names(&repository).unwrap();
 
 	if branch_names.contains(&branch) {
-		match checkout(&mut repository, &branch) {
-			Ok(r) => { println!("Successfully checked out branch {} {:?}", &branch, r); }
-			Err(e) => { eprintln!("Unable to successfully check out branch: {:?}", e); }
-		}
+		let result = checkout(&mut repository, &branch);
+		interpret_checkout_result(&branch, result);
 	} else {
 		branch_names.sort_by(|a, b| {
 			let a_dist = similarity(&branch, a);
@@ -69,9 +78,7 @@ fn main() {
 
 		let lowest_distance_branch = &branch_names[0];
 
-		match checkout(&mut repository, &lowest_distance_branch) {
-			Ok(r) => { println!("Checked out branch {}: {:?}", lowest_distance_branch, r); }
-			Err(e) => { eprintln!("Error while checking out {}: {:?}", lowest_distance_branch, e); }
-		}
+		let result = checkout(&mut repository, &lowest_distance_branch);
+		interpret_checkout_result(&lowest_distance_branch, result);
 	}
 }
