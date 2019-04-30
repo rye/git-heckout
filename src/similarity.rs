@@ -4,18 +4,18 @@ pub fn sublime(pattern: &str, string: &str) -> isize {
 
 #[cfg(test)]
 mod tests {
-	#[bench]
-	fn bench_sublime_foobar_f(b: &mut test::Bencher) {
-		b.iter(|| assert_eq!(super::sublime("f", "foobar"), 83))
+	#[test]
+	fn sublime_foobar_f() {
+		assert_eq!(super::sublime("f", "foobar"), 83)
 	}
 
-	#[bench]
-	fn bench_sublime_master_ma(b: &mut test::Bencher) {
-		b.iter(|| assert_eq!(super::sublime("ma", "master"), 117))
+	#[test]
+	fn sublime_master_ma() {
+		assert_eq!(super::sublime("ma", "master"), 117)
 	}
 
-	#[bench]
-	fn bench_sublime_master_master(b: &mut test::Bencher) {
-		b.iter(|| assert_eq!(super::sublime("master", "master"), 896))
+	#[test]
+	fn sublime_master_master() {
+		assert_eq!(super::sublime("master", "master"), 896)
 	}
 }
