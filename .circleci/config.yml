@@ -1,0 +1,134 @@
+---
+version: 2.1
+
+executors:
+  rust-nightly:
+    docker:
+      - image: docker.io/rustlang/rust:nightly-slim
+
+  rust-latest:
+    docker:
+      - image: docker.io/rust:1.34.1-slim
+
+commands:
+  check:
+    steps:
+      - run: cargo check
+
+  clippy:
+    description: Run Clippy
+    steps:
+      - run: rustup component add clippy || cargo install --git ssh://git@github.com/rust-lang/rust-clippy.git --force clippy
+      - run: cargo clippy --verbose --all-features -- -D warnings
+
+  fmt:
+    steps:
+      - run: rustup component add rustfmt-preview
+      - run: cargo fmt --verbose --all -- --check
+
+  tarpaulin:
+    steps:
+      - run: apt-get update && apt-get install -qy libssl-dev pkg-config
+      - run: RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin -f
+      - run: cargo tarpaulin --out Xml
+
+  codecov:
+    steps:
+      - run: apt-get update && apt-get install -qy curl
+      - run: bash <(curl -s https://codecov.io/bash)
+
+  test:
+    steps:
+      - run: cargo test --verbose
+
+  build-release:
+    steps:
+      - run: cargo build --release --verbose
+
+jobs:
+  check-nightly:
+    executor: rust-nightly
+    steps:
+      - checkout
+      - check
+
+  check-latest:
+    executor: rust-latest
+    steps:
+      - checkout
+      - check
+
+  clippy-nightly:
+    executor: rust-nightly
+    steps:
+      - checkout
+      - clippy
+
+  clippy-latest:
+    executor: rust-latest
+    steps:
+      - checkout
+      - clippy
+  fmt:
+    executor: rust-nightly
+    steps:
+      - checkout
+      - fmt
+
+  coverage:
+    executor: rust-nightly
+    steps:
+      - checkout
+      - tarpaulin
+      - codecov
+
+  test-nightly:
+    executor: rust-nightly
+    steps:
+      - checkout
+      - test
+
+  test-latest:
+    executor: rust-latest
+    steps:
+      - checkout
+      - test
+
+  build-release-nightly:
+    executor: rust-nightly
+    steps:
+      - checkout
+      - build-release
+
+  build-release-latest:
+    executor: rust-latest
+    steps:
+      - checkout
+      - build-release
+
+workflows:
+  version: 2
+  commit: &standard_workflow
+    jobs:
+      - check-nightly
+      - check-latest
+      - clippy-nightly
+      - clippy-latest
+      - fmt
+      - test-nightly:
+          requires: [check-nightly, clippy-nightly, fmt]
+      - test-latest:
+          requires: [check-latest, clippy-latest, fmt]
+      - coverage:
+          requires: [test-nightly]
+      - build-release-nightly:
+          requires: [test-nightly]
+      - build-release-latest:
+          requires: [test-latest]
+
+  qid:
+    triggers:
+      - schedule:
+          cron: "0 0,6,12,18 * * *"
+          filters: {branches: {only: [master]}}
+    <<: *standard_workflow
