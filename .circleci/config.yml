@@ -30,6 +30,7 @@ commands:
     steps:
       - run: apt-get update && apt-get install -qy libssl-dev pkg-config
       - run: RUSTFLAGS="--cfg procmacro2_semver_exempt" cargo install cargo-tarpaulin -f
+      - run: setarch `uname -m` -R ~/.circleci/bin/cargo-tarpaulin
       - run: cargo tarpaulin --out Xml
 
   codecov:
