@@ -57,6 +57,9 @@ fn main() {
 			Err(_) => 1,
 		});
 	} else {
+		// Sort branch names in descending distance from provided branch argument
+		// so that we can just use the first element instead of having to walk the
+		// iterator to the end (linear in the number of branches)
 		branch_names.sort_by(|a, b| {
 			let a_dist = similarity::sublime(&branch, a);
 			let b_dist = similarity::sublime(&branch, b);
@@ -64,6 +67,7 @@ fn main() {
 			b_dist.partial_cmp(&a_dist).unwrap()
 		});
 
+		// Grab the highest similarity branch (at the front of the iterator chain)
 		let best_match = &branch_names[0];
 
 		std::process::exit(match checkout(&best_match) {
