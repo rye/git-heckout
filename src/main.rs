@@ -45,7 +45,7 @@ fn checkout(branch: &str) -> std::io::Result<std::process::ExitStatus> {
 }
 
 fn main() {
-	let mut repository = find_repository().expect("Could not find a repository");
+	let repository = find_repository().expect("Could not find a repository");
 
 	let branch = std::env::args().last().expect("Expected a last argument");
 
