@@ -35,22 +35,13 @@ fn find_repository() -> Result<git2::Repository, git2::Error> {
 	git2::Repository::open_from_env()
 }
 
-fn checkout(repository: &mut git2::Repository, branch: &str) -> Result<(), git2::Error> {
-	let branch_ref_name: &str = &format!("refs/heads/{}", &branch);
-
-	repository.set_head(branch_ref_name)?;
-	repository.checkout_head(None)
-}
-
-fn interpret_checkout_result(branch: &str, result: Result<(), git2::Error>) {
-	match result {
-		Ok(_) => {
-			println!("Successfully checked out branch {}.", &branch);
-		}
-		Err(e) => {
-			eprintln!("An error occurred while checking out {}: {}", &branch, e);
-		}
-	}
+fn checkout(branch: &str) -> std::io::Result<std::process::ExitStatus> {
+	std::process::Command::new("git")
+		.arg("checkout")
+		.arg(branch)
+		.spawn()
+		.expect("failed to spawn git checkout")
+		.wait()
 }
 
 fn main() {
@@ -61,8 +52,10 @@ fn main() {
 	let mut branch_names: Vec<String> = branch_names(&repository).unwrap();
 
 	if branch_names.contains(&branch) {
-		let result = checkout(&mut repository, &branch);
-		interpret_checkout_result(&branch, result);
+		std::process::exit(match checkout(&branch) {
+			Ok(_) => 0,
+			Err(_) => 1,
+		});
 	} else {
 		branch_names.sort_by(|a, b| {
 			let a_dist = similarity::sublime(&branch, a);
@@ -73,7 +66,9 @@ fn main() {
 
 		let best_match = &branch_names[0];
 
-		let result = checkout(&mut repository, &best_match);
-		interpret_checkout_result(&best_match, result);
+		std::process::exit(match checkout(&best_match) {
+			Ok(_) => 0,
+			Err(_) => 1,
+		});
 	}
 }
