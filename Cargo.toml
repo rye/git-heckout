@@ -7,5 +7,5 @@ description = "Check out your favorite branches without typing them correctly."
 license = "MIT"
 
 [dependencies]
-sublime_fuzzy = "0.6.0"
-git2 = { version = "0.9.1", default-features = false }
+sublime_fuzzy = "~0.6.0"
+git2 = { version = "~0.9.1", default-features = false }
