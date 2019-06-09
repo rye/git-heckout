@@ -71,9 +71,9 @@ fn main() {
 			b_dist.partial_cmp(&a_dist).unwrap()
 		});
 
-		let lowest_distance_branch = &branch_names[0];
+		let best_match = &branch_names[0];
 
-		let result = checkout(&mut repository, &lowest_distance_branch);
-		interpret_checkout_result(&lowest_distance_branch, result);
+		let result = checkout(&mut repository, &best_match);
+		interpret_checkout_result(&best_match, result);
 	}
 }
