@@ -5,6 +5,9 @@ repository = "https://github.com/rye/git-heckout"
 authors = ["Kristofer Rye <kristofer.rye@gmail.com>"]
 description = "Check out your favorite branches without typing them correctly."
 license = "MIT"
+readme = "README.md"
+keywords = ["git", "tool", "checkout", "cli"]
+categories = ["command-line-utilities", "development-tools", "filesystem"]
 
 [dependencies]
 sublime_fuzzy = "~0.6.0"
