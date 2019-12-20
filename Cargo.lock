@@ -154,9 +154,9 @@ checksum = "05da548ad6865900e60eaba7f589cc0783590a92e940c26953ff81ddbab2d677"
 
 [[package]]
 name = "smallvec"
-version = "1.0.0"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4ecf3b85f68e8abaa7555aa5abdb1153079387e60b718283d732f03897fcfc86"
+checksum = "44e59e0c9fa00817912ae6e4e6e3c4fe04455e75699d06eedc7d85917ed8e8f4"
 
 [[package]]
 name = "sublime_fuzzy"
