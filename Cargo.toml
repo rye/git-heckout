@@ -1,5 +1,6 @@
 [package]
 name = "git-heckout"
+edition = "2018"
 version = "0.5.1"
 repository = "https://github.com/rye/git-heckout"
 authors = ["Kristofer Rye <kristofer.rye@gmail.com>"]

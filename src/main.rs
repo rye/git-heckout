@@ -1,8 +1,3 @@
-extern crate git2;
-
-extern crate git_heckout;
-extern crate sublime_fuzzy;
-
 use git_heckout::similarity;
 
 fn branch_names(repository: &git2::Repository) -> Result<Vec<String>, git2::Error> {
