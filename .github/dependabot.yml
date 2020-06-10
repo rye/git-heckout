@@ -1,0 +1,15 @@
+version: 2
+updates:
+- package-ecosystem: cargo
+  directory: "/"
+  schedule:
+    interval: daily
+    time: '11:00'
+  open-pull-requests-limit: 99
+  reviewers:
+  - rye
+  assignees:
+  - rye
+  allow:
+  - dependency-type: direct
+  - dependency-type: indirect
