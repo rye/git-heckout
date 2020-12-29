@@ -12,4 +12,4 @@ categories = ["command-line-utilities", "development-tools", "filesystem"]
 
 [dependencies]
 sublime_fuzzy = "~0.6.0"
-git2 = { version = "~0.13.12", default-features = false }
+git2 = { version = "~0.13.15", default-features = false }
