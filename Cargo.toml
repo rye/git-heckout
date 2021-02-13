@@ -1,7 +1,7 @@
 [package]
 name = "git-heckout"
 edition = "2018"
-version = "0.5.1"
+version = "0.6.0"
 repository = "https://github.com/rye/git-heckout"
 authors = ["Kristofer Rye <kristofer.rye@gmail.com>"]
 description = "Check out your favorite branches without typing them correctly."
