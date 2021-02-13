@@ -11,5 +11,5 @@ keywords = ["git", "tool", "checkout", "cli"]
 categories = ["command-line-utilities", "development-tools", "filesystem"]
 
 [dependencies]
-sublime_fuzzy = "~0.6.0"
+sublime_fuzzy = "~0.7.0"
 git2 = { version = "~0.13.12", default-features = false }
