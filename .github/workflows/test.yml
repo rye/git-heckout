@@ -3,7 +3,7 @@ name: Check and Test
 on:
   push:
   schedule:
-  - cron: 15 */6 * * *
+  - cron: 0 0 * * *
 
 jobs:
   check:
