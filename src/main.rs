@@ -65,7 +65,7 @@ fn main() {
 		// Grab the highest similarity branch (at the front of the iterator chain)
 		let best_match = &branch_names[0];
 
-		std::process::exit(match checkout(&best_match) {
+		std::process::exit(match checkout(best_match) {
 			Ok(_) => 0,
 			Err(_) => 1,
 		});
