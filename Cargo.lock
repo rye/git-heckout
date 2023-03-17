@@ -146,9 +146,9 @@ checksum = "cda74da7e1a664f795bb1f8a87ec406fb89a02522cf6e50620d016add6dbbf5c"
 
 [[package]]
 name = "unicode-bidi"
-version = "0.3.10"
+version = "0.3.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d54675592c1dbefd78cbd98db9bacd89886e1ca50692a0692baefffdeb92dd58"
+checksum = "7d502c968c6a838ead8e69b2ee18ec708802f99db92a0d156705ec9ef801993b"
 
 [[package]]
 name = "unicode-normalization"
